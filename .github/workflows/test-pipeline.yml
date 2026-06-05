@@ -23,7 +23,7 @@ permissions:
 
 env:
   IMAGE_TAG:  ${{ github.event.client_payload.image_tag || inputs.image_tag || 'latest' }}
-  IMAGE_BASE: ${{ github.event.client_payload.image_base || format('ghcr.io/{0}/PersonalFinanceLedgerApp', github.repository_owner) }}
+  IMAGE_BASE: ${{ github.event.client_payload.image_base || format('ghcr.io/{0}/personalfinanceledgerapp', github.repository_owner) }}
 
 jobs:
   test-pipeline:
