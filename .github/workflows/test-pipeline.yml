@@ -48,6 +48,9 @@ jobs:
       - name: Create reports directories
         run: mkdir -p reports/{contract,e2e,performance,security}
 
+      - name: Normalise image reference to lowercase
+        run: echo "IMAGE_BASE=${IMAGE_BASE,,}" >> $GITHUB_ENV
+
       # ── Start application ────────────────────────────────────────────────────
       - name: Start application containers
         env:
