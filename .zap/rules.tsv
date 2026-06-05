@@ -1,0 +1,5 @@
+# ZAP alert suppression rules
+# Format: <alertId>\t<ruleType>\t<url>
+# Add entries here after reviewing the first scan report.
+# Example (suppress CSP alert across all pages):
+# 10038	IGNORE	.*

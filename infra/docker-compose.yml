@@ -1,0 +1,43 @@
+services:
+  mongo:
+    image: mongo:7.0
+    restart: unless-stopped
+    healthcheck:
+      test: ['CMD', 'mongosh', '--eval', "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - ledger-net
+
+  backend:
+    image: ${BACKEND_IMAGE:-ghcr.io/JPlipio77/personal-finance-ledger/backend:latest}
+    environment:
+      - NODE_ENV=staging
+      - PORT=5000
+      - MONGODB_URI=mongodb://mongo:27017/finance_ledger
+      - JWT_SECRET=${JWT_SECRET:-dev-secret-change-me}
+      - SESSION_SECRET=${JWT_SECRET:-dev-secret-change-me}
+      - FRONTEND_URL=http://localhost:3000
+      - GOOGLE_CLIENT_ID=placeholder
+      - GOOGLE_CLIENT_SECRET=placeholder
+      - GOOGLE_CALLBACK_URL=http://localhost:5000/api/auth/google/callback
+    ports:
+      - "5000:5000"
+    depends_on:
+      mongo:
+        condition: service_healthy
+    networks:
+      - ledger-net
+
+  frontend:
+    image: ${FRONTEND_IMAGE:-ghcr.io/JPlipio77/personal-finance-ledger/frontend:latest}
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    networks:
+      - ledger-net
+
+networks:
+  ledger-net:
