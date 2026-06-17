@@ -56,7 +56,7 @@ jobs:
         env:
           BACKEND_IMAGE:  ${{ env.IMAGE_BASE }}/backend:${{ env.IMAGE_TAG }}
           FRONTEND_IMAGE: ${{ env.IMAGE_BASE }}/frontend:${{ env.IMAGE_TAG }}
-          JWT_SECRET:     ${{ secrets.JWT_SECRET }}
+          SESSION_SECRET: ${{ secrets.SESSION_SECRET }}
         run: docker compose -f infra/docker-compose.yml up -d
 
       - name: Wait for backend
@@ -90,7 +90,7 @@ jobs:
 
           if [ -f contract/auth-api.collection.json ]; then
             newman run contract/auth-api.collection.json \
-              --env-var baseUrl=http://localhost:5000 \
+              --env-var baseUrl=http://localhost:5000/api \
               --reporters cli,htmlextra,json \
               --reporter-htmlextra-export reports/contract/auth-api-report.html \
               --reporter-htmlextra-title 'Auth API Contract Tests' \
@@ -134,7 +134,7 @@ jobs:
         run: |
           if [ -f performance/load.js ]; then
             k6 run \
-              --env BASE_URL=http://localhost:5000 \
+              --env STAGING_URL=http://localhost:5000 \
               --summary-export=reports/performance/summary.json \
               performance/load.js \
               2>&1 | tee reports/performance/output.log

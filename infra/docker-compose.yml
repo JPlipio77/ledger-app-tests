@@ -16,8 +16,7 @@ services:
       - NODE_ENV=staging
       - PORT=5000
       - MONGODB_URI=mongodb://mongo:27017/finance_ledger
-      - JWT_SECRET=${JWT_SECRET:-dev-secret-change-me}
-      - SESSION_SECRET=${JWT_SECRET:-dev-secret-change-me}
+      - SESSION_SECRET=${SESSION_SECRET:-dev-secret-change-me}
       - FRONTEND_URL=http://localhost:3000
       - GOOGLE_CLIENT_ID=placeholder
       - GOOGLE_CLIENT_SECRET=placeholder
